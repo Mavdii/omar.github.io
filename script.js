@@ -97,12 +97,14 @@ const audioToggleIcon = audioToggleButton.querySelector("i");
 
 // Function to play audio
 function playAudio() {
+    console.log("Attempting to play audio...");
     backgroundAudio.play().then(() => {
         audioToggleButton.classList.add("playing");
         audioToggleIcon.classList.remove("fa-play");
         audioToggleIcon.classList.add("fa-pause");
+        console.log("Audio playing.");
     }).catch(error => {
-        console.log("Autoplay prevented:", error);
+        console.error("Error playing audio:", error);
     });
 }
 
