@@ -110,6 +110,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioToggleButton = document.getElementById("audio-toggle-btn");
     const audioToggleIcon = audioToggleButton ? audioToggleButton.querySelector("i") : null;
 
+    let isPlaying = false; // Add a flag to track the audio state
+
     console.log("DOMContentLoaded fired.");
     console.log("backgroundAudio element on load:", backgroundAudio);
     console.log("audioToggleButton element on load:", audioToggleButton);
@@ -118,46 +120,52 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("All audio elements and button found on DOMContentLoaded.");
 
         function playAudio() {
-            console.log("Attempting to play audio...");
-            const playPromise = backgroundAudio.play();
-
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Automatic playback started!
-                    audioToggleButton.classList.add("playing");
-                    audioToggleIcon.classList.remove("fa-play");
-                    audioToggleIcon.classList.add("fa-pause");
-                    console.log("Audio playing.");
-                })
-                .catch(error => {
-                    // Auto-play was prevented
-                    // Show paused UI.
-                    audioToggleButton.classList.remove("playing");
-                    audioToggleIcon.classList.remove("fa-pause");
-                    audioToggleIcon.classList.add("fa-play");
-                    console.error("Auto-play was prevented:", error);
-                });
+            if (isPlaying) {
+                console.log("Audio is already playing or attempting to play.");
+                return; // Already attempting to play, do nothing
             }
+            isPlaying = true;
+            console.log("Attempting to play audio...");
+            backgroundAudio.play().then(() => {
+                audioToggleButton.classList.add("playing");
+                audioToggleIcon.classList.remove("fa-play");
+                audioToggleIcon.classList.add("fa-pause");
+                console.log("Audio playing.");
+                // isPlaying is already true, no need to set again
+            }).catch(error => {
+                console.error("Error playing audio:", error);
+                isPlaying = false; // Reset flag if playing fails
+                audioToggleButton.classList.remove("playing");
+                audioToggleIcon.classList.remove("fa-pause");
+                audioToggleIcon.classList.add("fa-play");
+            });
         }
 
         function pauseAudio() {
+            if (!isPlaying) {
+                console.log("Audio is not currently playing.");
+                return; // Not currently playing, do nothing
+            }
             backgroundAudio.pause();
             audioToggleButton.classList.remove("playing");
             audioToggleIcon.classList.remove("fa-pause");
             audioToggleIcon.classList.add("fa-play");
             console.log("Audio paused.");
+            isPlaying = false; // Update flag after pausing
         }
 
-        // Attempt to play audio on load
+        // Attempt to play audio on load (this will be handled by playPromise logic)
         playAudio();
 
         audioToggleButton.addEventListener("click", () => {
-            console.log("Audio button clicked.");
+            console.log("Audio button clicked. Current isPlaying state:", isPlaying);
             console.log("backgroundAudio inside click handler:", backgroundAudio);
-            if (backgroundAudio && !backgroundAudio.paused) {
-                pauseAudio();
-            } else if (backgroundAudio) {
-                playAudio();
+            if (backgroundAudio) {
+                if (isPlaying) {
+                    pauseAudio();
+                } else {
+                    playAudio();
+                }
             } else {
                 console.error("backgroundAudio is null inside click handler.");
             }
