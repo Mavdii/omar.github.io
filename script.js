@@ -123,12 +123,7 @@ audioToggleButton.addEventListener("click", () => {
     }
 });
 
-// Attempt to play audio after first user interaction (for browsers that block autoplay)
-document.addEventListener("click", () => {
-    if (backgroundAudio.paused) {
-        playAudio();
-    }
-}, { once: true });
+
 
 function animateNumber(element, target) {
     let current = 0;
