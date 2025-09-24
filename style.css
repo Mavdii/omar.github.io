@@ -2,7 +2,7 @@
 .audio-toggle-btn {
     position: fixed;
     top: 50%;
-    right: 20px;
+    right: 30px; /* Increased right value */
     transform: translateY(-50%);
     background: linear-gradient(135deg, #A0522D, #8B4513);
     color: #fff;
@@ -12,7 +12,7 @@
     font-size: 1.1rem;
     font-weight: bold;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 99999; /* Increased z-index */
     display: flex;
     align-items: center;
     gap: 12px;
