@@ -119,14 +119,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
         function playAudio() {
             console.log("Attempting to play audio...");
-            backgroundAudio.play().then(() => {
-                audioToggleButton.classList.add("playing");
-                audioToggleIcon.classList.remove("fa-play");
-                audioToggleIcon.classList.add("fa-pause");
-                console.log("Audio playing.");
-            }).catch(error => {
-                console.error("Error playing audio:", error);
-            });
+            const playPromise = backgroundAudio.play();
+
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Automatic playback started!
+                    audioToggleButton.classList.add("playing");
+                    audioToggleIcon.classList.remove("fa-play");
+                    audioToggleIcon.classList.add("fa-pause");
+                    console.log("Audio playing.");
+                })
+                .catch(error => {
+                    // Auto-play was prevented
+                    // Show paused UI.
+                    audioToggleButton.classList.remove("playing");
+                    audioToggleIcon.classList.remove("fa-pause");
+                    audioToggleIcon.classList.add("fa-play");
+                    console.error("Auto-play was prevented:", error);
+                });
+            }
         }
 
         function pauseAudio() {
@@ -136,6 +147,9 @@ document.addEventListener("DOMContentLoaded", () => {
             audioToggleIcon.classList.add("fa-play");
             console.log("Audio paused.");
         }
+
+        // Attempt to play audio on load
+        playAudio();
 
         audioToggleButton.addEventListener("click", () => {
             console.log("Audio button clicked.");
