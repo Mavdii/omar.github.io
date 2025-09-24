@@ -91,62 +91,6 @@ if (aboutSection) {
 }
 
 // Number animation function
-let backgroundAudio;
-let audioToggleButton;
-let audioToggleIcon;
-
-document.addEventListener("DOMContentLoaded", () => {
-    backgroundAudio = document.getElementById("background-audio");
-    audioToggleButton = document.getElementById("audio-toggle-btn");
-    audioToggleIcon = audioToggleButton.querySelector("i");
-
-    if (backgroundAudio) {
-        console.log("backgroundAudio element found.");
-        // Toggle audio on button click
-        audioToggleButton.addEventListener("click", () => {
-            if (backgroundAudio.paused) {
-                playAudio();
-            } else {
-                pauseAudio();
-            }
-        });
-    } else {
-        console.error("backgroundAudio element not found!");
-    }
-});
-
-// Function to play audio
-function playAudio() {
-    console.log("Attempting to play audio...");
-    backgroundAudio.play().then(() => {
-        audioToggleButton.classList.add("playing");
-        audioToggleIcon.classList.remove("fa-play");
-        audioToggleIcon.classList.add("fa-pause");
-        console.log("Audio playing.");
-    }).catch(error => {
-        console.error("Error playing audio:", error);
-    });
-}
-
-// Function to pause audio
-function pauseAudio() {
-    backgroundAudio.pause();
-    audioToggleButton.classList.remove("playing");
-    audioToggleIcon.classList.remove("fa-pause");
-    audioToggleIcon.classList.add("fa-play");
-}
-
-// Toggle audio on button click
-audioToggleButton.addEventListener("click", () => {
-    if (backgroundAudio.paused) {
-        playAudio();
-    } else {
-        pauseAudio();
-    }
-});
-
-
-
 function animateNumber(element, target) {
     let current = 0;
     const increment = target / 50;
@@ -159,6 +103,50 @@ function animateNumber(element, target) {
         element.textContent = Math.floor(current);
     }, 30);
 }
+
+// Audio Playback Logic
+document.addEventListener("DOMContentLoaded", () => {
+    const backgroundAudio = document.getElementById("background-audio");
+    const audioToggleButton = document.getElementById("audio-toggle-btn");
+    const audioToggleIcon = audioToggleButton ? audioToggleButton.querySelector("i") : null;
+
+    if (backgroundAudio && audioToggleButton && audioToggleIcon) {
+        console.log("Audio elements and button found.");
+
+        function playAudio() {
+            console.log("Attempting to play audio...");
+            backgroundAudio.play().then(() => {
+                audioToggleButton.classList.add("playing");
+                audioToggleIcon.classList.remove("fa-play");
+                audioToggleIcon.classList.add("fa-pause");
+                console.log("Audio playing.");
+            }).catch(error => {
+                console.error("Error playing audio:", error);
+            });
+        }
+
+        function pauseAudio() {
+            backgroundAudio.pause();
+            audioToggleButton.classList.remove("playing");
+            audioToggleIcon.classList.remove("fa-pause");
+            audioToggleIcon.classList.add("fa-play");
+            console.log("Audio paused.");
+        }
+
+        audioToggleButton.addEventListener("click", () => {
+            console.log("Audio button clicked.");
+            console.log("backgroundAudio:", backgroundAudio);
+            console.log("backgroundAudio.paused:", backgroundAudio.paused);
+            if (backgroundAudio.paused) {
+                playAudio();
+            } else {
+                pauseAudio();
+            }
+        });
+    } else {
+        console.error("One or more audio/button elements not found:", { backgroundAudio, audioToggleButton, audioToggleIcon });
+    }
+});
 
 // Fade in animation for sections
 const fadeObserver = new IntersectionObserver((entries) => {
@@ -481,4 +469,5 @@ function createCursorTrail() {
 if (window.innerWidth > 768) {
     createCursorTrail();
 }
+
 
