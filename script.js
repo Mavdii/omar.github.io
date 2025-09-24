@@ -91,6 +91,17 @@ if (aboutSection) {
 }
 
 // Number animation function
+const backgroundAudio = document.getElementById("background-audio");
+
+// Attempt to play audio after user interaction
+document.addEventListener("click", () => {
+    if (backgroundAudio && backgroundAudio.paused) {
+        backgroundAudio.play().catch(error => {
+            console.log("Autoplay prevented:", error);
+        });
+    }
+}, { once: true });
+
 function animateNumber(element, target) {
     let current = 0;
     const increment = target / 50;

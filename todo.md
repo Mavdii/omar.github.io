@@ -14,9 +14,10 @@
 - [x] تحسين التصميم للهواتف المحمولة
 
 ## المرحلة 3: إنشاء repository على GitHub ونشر الموقع
-- [ ] إنشاء repository باسم omar.github.io
-- [ ] رفع الملفات على GitHub
-- [ ] تفعيل GitHub Pages
+- [x] إنشاء repository باسم omar.github.io
+- [x] رفع الملفات على GitHub
+- [x] تفعيل GitHub Pages (يتم تلقائياً عند الدفع لـ main في omar.github.io)
+
 
 ## المرحلة 4: اختبار الموقع وتسليم النتائج
 - [ ] اختبار الموقع محلياً
