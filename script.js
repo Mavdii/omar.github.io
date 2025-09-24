@@ -100,14 +100,19 @@ document.addEventListener("DOMContentLoaded", () => {
     audioToggleButton = document.getElementById("audio-toggle-btn");
     audioToggleIcon = audioToggleButton.querySelector("i");
 
-    // Toggle audio on button click
-    audioToggleButton.addEventListener("click", () => {
-        if (backgroundAudio.paused) {
-            playAudio();
-        } else {
-            pauseAudio();
-        }
-    });
+    if (backgroundAudio) {
+        console.log("backgroundAudio element found.");
+        // Toggle audio on button click
+        audioToggleButton.addEventListener("click", () => {
+            if (backgroundAudio.paused) {
+                playAudio();
+            } else {
+                pauseAudio();
+            }
+        });
+    } else {
+        console.error("backgroundAudio element not found!");
+    }
 });
 
 // Function to play audio
