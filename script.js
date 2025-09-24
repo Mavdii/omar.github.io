@@ -1,64 +1,64 @@
 // DOM Elements
-const hamburger = document.querySelector('.hamburger');
-const navMenu = document.querySelector('.nav-menu');
-const navLinks = document.querySelectorAll('.nav-link');
-const skillBars = document.querySelectorAll('.skill-progress');
-const statNumbers = document.querySelectorAll('.stat-number');
+const hamburger = document.querySelector(".hamburger");
+const navMenu = document.querySelector(".nav-menu");
+const navLinks = document.querySelectorAll(".nav-link");
+const skillBars = document.querySelectorAll(".skill-progress");
+const statNumbers = document.querySelectorAll(".stat-number");
 
 // Mobile Navigation Toggle
-hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('active');
-    navMenu.classList.toggle('active');
+hamburger.addEventListener("click", () => {
+    hamburger.classList.toggle("active");
+    navMenu.classList.toggle("active");
 });
 
 // Close mobile menu when clicking on a link
 navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
+    link.addEventListener("click", () => {
+        hamburger.classList.remove("active");
+        navMenu.classList.remove("active");
     });
 });
 
 // Smooth scrolling for navigation links
 navLinks.forEach(link => {
-    link.addEventListener('click', (e) => {
+    link.addEventListener("click", (e) => {
         e.preventDefault();
-        const targetId = link.getAttribute('href');
+        const targetId = link.getAttribute("href");
         const targetSection = document.querySelector(targetId);
         
         if (targetSection) {
             const offsetTop = targetSection.offsetTop - 70;
             window.scrollTo({
                 top: offsetTop,
-                behavior: 'smooth'
+                behavior: "smooth"
             });
         }
     });
 });
 
 // Navbar background on scroll
-window.addEventListener('scroll', () => {
-    const navbar = document.querySelector('.navbar');
+window.addEventListener("scroll", () => {
+    const navbar = document.querySelector(".navbar");
     if (window.scrollY > 100) {
-        navbar.style.background = 'rgba(0, 0, 0, 0.95)';
+        navbar.style.background = "rgba(0, 0, 0, 0.95)";
     } else {
-        navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+        navbar.style.background = "rgba(0, 0, 0, 0.9)";
     }
 });
 
 // Intersection Observer for animations
 const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: "0px 0px -50px 0px"
 };
 
 // Animate skill bars
 const skillObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const skillBars = entry.target.querySelectorAll('.skill-progress');
+            const skillBars = entry.target.querySelectorAll(".skill-progress");
             skillBars.forEach(bar => {
-                const width = bar.getAttribute('data-width');
+                const width = bar.getAttribute("data-width");
                 setTimeout(() => {
                     bar.style.width = width;
                 }, 200);
@@ -67,7 +67,7 @@ const skillObserver = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-const skillsSection = document.querySelector('.skills');
+const skillsSection = document.querySelector(".skills");
 if (skillsSection) {
     skillObserver.observe(skillsSection);
 }
@@ -76,16 +76,16 @@ if (skillsSection) {
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            const statNumbers = entry.target.querySelectorAll('.stat-number');
+            const statNumbers = entry.target.querySelectorAll(".stat-number");
             statNumbers.forEach(stat => {
-                const target = parseInt(stat.getAttribute('data-target'));
+                const target = parseInt(stat.getAttribute("data-target"));
                 animateNumber(stat, target);
             });
         }
     });
 }, observerOptions);
 
-const aboutSection = document.querySelector('.about');
+const aboutSection = document.querySelector(".about");
 if (aboutSection) {
     statsObserver.observe(aboutSection);
 }
@@ -110,8 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioToggleButton = document.getElementById("audio-toggle-btn");
     const audioToggleIcon = audioToggleButton ? audioToggleButton.querySelector("i") : null;
 
+    console.log("DOMContentLoaded fired.");
+    console.log("backgroundAudio element on load:", backgroundAudio);
+    console.log("audioToggleButton element on load:", audioToggleButton);
+
     if (backgroundAudio && audioToggleButton && audioToggleIcon) {
-        console.log("Audio elements and button found.");
+        console.log("All audio elements and button found on DOMContentLoaded.");
 
         function playAudio() {
             console.log("Attempting to play audio...");
@@ -135,16 +139,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
         audioToggleButton.addEventListener("click", () => {
             console.log("Audio button clicked.");
-            console.log("backgroundAudio:", backgroundAudio);
-            console.log("backgroundAudio.paused:", backgroundAudio.paused);
-            if (backgroundAudio.paused) {
+            console.log("backgroundAudio inside click handler:", backgroundAudio);
+            if (backgroundAudio && !backgroundAudio.paused) {
+                pauseAudio();
+            } else if (backgroundAudio) {
                 playAudio();
             } else {
-                pauseAudio();
+                console.error("backgroundAudio is null inside click handler.");
             }
         });
     } else {
-        console.error("One or more audio/button elements not found:", { backgroundAudio, audioToggleButton, audioToggleIcon });
+        console.error("One or more audio/button elements not found on DOMContentLoaded:", { backgroundAudio, audioToggleButton, audioToggleIcon });
     }
 });
 
@@ -152,25 +157,25 @@ document.addEventListener("DOMContentLoaded", () => {
 const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
+            entry.target.style.opacity = "1";
+            entry.target.style.transform = "translateY(0)";
         }
     });
 }, observerOptions);
 
 // Apply fade animation to cards and sections
-const animatedElements = document.querySelectorAll('.about-card, .skill-category, .project-card, .contact-item');
+const animatedElements = document.querySelectorAll(".about-card, .skill-category, .project-card, .contact-item");
 animatedElements.forEach(element => {
-    element.style.opacity = '0';
-    element.style.transform = 'translateY(30px)';
-    element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    element.style.opacity = "0";
+    element.style.transform = "translateY(30px)";
+    element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
     fadeObserver.observe(element);
 });
 
 // Parallax effect for hero section
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
     const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
+    const hero = document.querySelector(".hero");
     if (hero) {
         const rate = scrolled * -0.5;
         hero.style.transform = `translateY(${rate}px)`;
@@ -178,51 +183,52 @@ window.addEventListener('scroll', () => {
 });
 
 // Contact form handling
-const contactForm = document.querySelector('.contact-form');
+const contactForm = document.querySelector(".contact-form");
 if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
+    contactForm.addEventListener("submit", (e) => {
         e.preventDefault();
         
         // Get form data
         const formData = new FormData(contactForm);
-        const name = formData.get('name');
-        const email = formData.get('email');
-        const subject = formData.get('subject');
-        const message = formData.get('message');
+        const name = formData.get("name");
+        const email = formData.get("email");
+        const subject = formData.get("subject");
+        const message = formData.get("message");
         
         // Simple validation
         if (!name || !email || !subject || !message) {
-            showNotification('يرجى ملء جميع الحقول المطلوبة', 'error');
+            showNotification("يرجى ملء جميع الحقول المطلوبة", "error");
             return;
         }
         
         if (!isValidEmail(email)) {
-            showNotification('يرجى إدخال بريد إلكتروني صحيح', 'error');
+            showNotification("يرجى إدخال بريد إلكتروني صحيح", "error");
             return;
         }
         
         // Simulate form submission
-        showNotification('تم إرسال رسالتك بنجاح! سأتواصل معك قريباً', 'success');
+        showNotification("تم إرسال رسالتك بنجاح! سأتواصل معك قريباً", "success");
         contactForm.reset();
     });
 }
 
 // Email validation function
 function isValidEmail(email) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^
+\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
 // Notification system
-function showNotification(message, type = 'info') {
+function showNotification(message, type = "info") {
     // Remove existing notifications
-    const existingNotification = document.querySelector('.notification');
+    const existingNotification = document.querySelector(".notification");
     if (existingNotification) {
         existingNotification.remove();
     }
     
     // Create notification element
-    const notification = document.createElement('div');
+    const notification = document.createElement("div");
     notification.className = `notification notification-${type}`;
     notification.textContent = message;
     
@@ -231,7 +237,7 @@ function showNotification(message, type = 'info') {
         position: fixed;
         top: 20px;
         right: 20px;
-        background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#007bff'};
+        background: ${type === "success" ? "#28a745" : type === "error" ? "#dc3545" : "#007bff"};
         color: white;
         padding: 15px 20px;
         border-radius: 10px;
@@ -248,12 +254,12 @@ function showNotification(message, type = 'info') {
     
     // Animate in
     setTimeout(() => {
-        notification.style.transform = 'translateX(0)';
+        notification.style.transform = "translateX(0)";
     }, 100);
     
     // Remove after 5 seconds
     setTimeout(() => {
-        notification.style.transform = 'translateX(100%)';
+        notification.style.transform = "translateX(100%)";
         setTimeout(() => {
             if (notification.parentNode) {
                 notification.remove();
@@ -264,9 +270,9 @@ function showNotification(message, type = 'info') {
 
 // Scroll to top functionality
 function createScrollToTop() {
-    const scrollBtn = document.createElement('button');
-    scrollBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-    scrollBtn.className = 'scroll-to-top';
+    const scrollBtn = document.createElement("button");
+    scrollBtn.innerHTML = "<i class=\"fas fa-chevron-up\"></i>";
+    scrollBtn.className = "scroll-to-top";
     scrollBtn.style.cssText = `
         position: fixed;
         bottom: 30px;
@@ -289,31 +295,31 @@ function createScrollToTop() {
     document.body.appendChild(scrollBtn);
     
     // Show/hide based on scroll position
-    window.addEventListener('scroll', () => {
+    window.addEventListener("scroll", () => {
         if (window.pageYOffset > 300) {
-            scrollBtn.style.opacity = '1';
-            scrollBtn.style.visibility = 'visible';
+            scrollBtn.style.opacity = "1";
+            scrollBtn.style.visibility = "visible";
         } else {
-            scrollBtn.style.opacity = '0';
-            scrollBtn.style.visibility = 'hidden';
+            scrollBtn.style.opacity = "0";
+            scrollBtn.style.visibility = "hidden";
         }
     });
     
     // Scroll to top on click
-    scrollBtn.addEventListener('click', () => {
+    scrollBtn.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: "smooth"
         });
     });
     
     // Hover effect
-    scrollBtn.addEventListener('mouseenter', () => {
-        scrollBtn.style.transform = 'translateY(-3px)';
+    scrollBtn.addEventListener("mouseenter", () => {
+        scrollBtn.style.transform = "translateY(-3px)";
     });
     
-    scrollBtn.addEventListener('mouseleave', () => {
-        scrollBtn.style.transform = 'translateY(0)';
+    scrollBtn.addEventListener("mouseleave", () => {
+        scrollBtn.style.transform = "translateY(0)";
     });
 }
 
@@ -323,7 +329,7 @@ createScrollToTop();
 // Typing effect for hero title
 function typeWriter(element, text, speed = 100) {
     let i = 0;
-    element.textContent = '';
+    element.textContent = "";
     
     function type() {
         if (i < text.length) {
@@ -337,19 +343,19 @@ function typeWriter(element, text, speed = 100) {
 }
 
 // Initialize typing effect when page loads
-window.addEventListener('load', () => {
-    const heroName = document.querySelector('.title-name');
+window.addEventListener("load", () => {
+    const heroName = document.querySelector(".title-name");
     if (heroName) {
         setTimeout(() => {
-            typeWriter(heroName, 'عمر', 150);
+            typeWriter(heroName, "عمر", 150);
         }, 1500);
     }
 });
 
 // Add loading animation
-window.addEventListener('load', () => {
-    const loader = document.createElement('div');
-    loader.className = 'page-loader';
+window.addEventListener("load", () => {
+    const loader = document.createElement("div");
+    loader.className = "page-loader";
     loader.innerHTML = `
         <div class="loader-content">
             <div class="loader-spinner"></div>
@@ -372,13 +378,13 @@ window.addEventListener('load', () => {
         transition: opacity 0.5s ease;
     `;
     
-    const loaderContent = loader.querySelector('.loader-content');
+    const loaderContent = loader.querySelector(".loader-content");
     loaderContent.style.cssText = `
         text-align: center;
         color: #d4af37;
     `;
     
-    const spinner = loader.querySelector('.loader-spinner');
+    const spinner = loader.querySelector(".loader-spinner");
     spinner.style.cssText = `
         width: 50px;
         height: 50px;
@@ -390,7 +396,7 @@ window.addEventListener('load', () => {
     `;
     
     // Add spinner animation
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -403,7 +409,7 @@ window.addEventListener('load', () => {
     
     // Remove loader after page is fully loaded
     setTimeout(() => {
-        loader.style.opacity = '0';
+        loader.style.opacity = "0";
         setTimeout(() => {
             if (loader.parentNode) {
                 loader.remove();
@@ -418,8 +424,8 @@ function createCursorTrail() {
     const trailLength = 10;
     
     for (let i = 0; i < trailLength; i++) {
-        const dot = document.createElement('div');
-        dot.className = 'cursor-trail';
+        const dot = document.createElement("div");
+        dot.className = "cursor-trail";
         dot.style.cssText = `
             position: fixed;
             width: 4px;
@@ -438,7 +444,7 @@ function createCursorTrail() {
     let mouseX = 0;
     let mouseY = 0;
     
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
     });
@@ -450,8 +456,8 @@ function createCursorTrail() {
         trail.forEach((dot, index) => {
             const nextDot = trail[index + 1] || trail[0];
             
-            dot.style.left = x + 'px';
-            dot.style.top = y + 'px';
+            dot.style.left = x + "px";
+            dot.style.top = y + "px";
             
             if (nextDot) {
                 x += (parseFloat(nextDot.style.left) - x) * 0.3;
