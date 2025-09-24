@@ -91,9 +91,24 @@ if (aboutSection) {
 }
 
 // Number animation function
-const backgroundAudio = document.getElementById("background-audio");
-const audioToggleButton = document.getElementById("audio-toggle-btn");
-const audioToggleIcon = audioToggleButton.querySelector("i");
+let backgroundAudio;
+let audioToggleButton;
+let audioToggleIcon;
+
+document.addEventListener("DOMContentLoaded", () => {
+    backgroundAudio = document.getElementById("background-audio");
+    audioToggleButton = document.getElementById("audio-toggle-btn");
+    audioToggleIcon = audioToggleButton.querySelector("i");
+
+    // Toggle audio on button click
+    audioToggleButton.addEventListener("click", () => {
+        if (backgroundAudio.paused) {
+            playAudio();
+        } else {
+            pauseAudio();
+        }
+    });
+});
 
 // Function to play audio
 function playAudio() {
