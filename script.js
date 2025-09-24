@@ -92,13 +92,41 @@ if (aboutSection) {
 
 // Number animation function
 const backgroundAudio = document.getElementById("background-audio");
+const audioToggleButton = document.getElementById("audio-toggle-btn");
+const audioToggleIcon = audioToggleButton.querySelector("i");
 
-// Attempt to play audio after user interaction
+// Function to play audio
+function playAudio() {
+    backgroundAudio.play().then(() => {
+        audioToggleButton.classList.add("playing");
+        audioToggleIcon.classList.remove("fa-play");
+        audioToggleIcon.classList.add("fa-pause");
+    }).catch(error => {
+        console.log("Autoplay prevented:", error);
+    });
+}
+
+// Function to pause audio
+function pauseAudio() {
+    backgroundAudio.pause();
+    audioToggleButton.classList.remove("playing");
+    audioToggleIcon.classList.remove("fa-pause");
+    audioToggleIcon.classList.add("fa-play");
+}
+
+// Toggle audio on button click
+audioToggleButton.addEventListener("click", () => {
+    if (backgroundAudio.paused) {
+        playAudio();
+    } else {
+        pauseAudio();
+    }
+});
+
+// Attempt to play audio after first user interaction (for browsers that block autoplay)
 document.addEventListener("click", () => {
-    if (backgroundAudio && backgroundAudio.paused) {
-        backgroundAudio.play().catch(error => {
-            console.log("Autoplay prevented:", error);
-        });
+    if (backgroundAudio.paused) {
+        playAudio();
     }
 }, { once: true });
 
